@@ -1,0 +1,30 @@
+( 1 0 
+"abcdef
+	ghi"
+#<< EOF
+Hello world!
+Yupeee
+EOF
+
+
+#<<EOF
+This is another wiki paragraph. `(a ((h MinimalistLaw) b i) "Minimalist Law" )
+EOF )
+
+(chess (White Kg3 Be7 Ng1 d3 h5) (Black Ke3 a2 d5 h7)
+)
+
+(table (4 4) 
+	(row (cell ((hspan 1) (rspan 2) italic 
+				(font (color red)) ) 
+	#<<---
+		Free text intermixed in LotsOfSillyParanthesys
+		Yupeee
+	--- 
+	)
+	(row (cell () "Hello world again")
+	 	 )
+	)
+)
+
+
