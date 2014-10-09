@@ -18,9 +18,10 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.+'
 }
 
-test {
+/*test {
     systemProperties 'property': 'value'
 }
+*/
 
 uploadArchives {
     repositories {
