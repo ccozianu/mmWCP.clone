@@ -6,7 +6,7 @@ package home.costin.util;
 
 /**
  * @author ccozianu
- *
+ * @deprecated this class was initiated way back when Java didn't have StringBuilders
  */
 public class StringConstructor {
 

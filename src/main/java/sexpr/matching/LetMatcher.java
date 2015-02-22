@@ -14,6 +14,12 @@ public class LetMatcher extends XMatcher {
 	final SExpr rest;
 	final OutMatcher outStmt;
 	
+	/**
+	 * From a list ($LET ( <pattern defs> * ) matchExpr [($OUT ...)])
+	 * The framework will match and consume $LET <br>
+	 *     while this constructor will get the rest: <br>
+	 *     (( <pattern defs> * ) matchExpr [($OUT ...)
+	 */
 	public LetMatcher(final SExpr arguments) {
 		defList= arguments.CAR();
 		pattern=  arguments.CDR().CAR();

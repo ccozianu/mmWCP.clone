@@ -7,7 +7,7 @@ import java.awt.*;
 /**
  * CommandParser implements a parser for commands
  * given at a console it automatically invokes the methods in the derived classes based on Java reflection
- * it automatically parse a command reckognizing the first token as the "verb",
+ * it automatically parse a command recognizing the first token as the "verb",
  * and the other tokens as arguments,
  * unless they contain an equal sign in which case it takes the token as a property definitions 
  * which can be retrieved later via getProperty(String propertyName)
@@ -42,7 +42,7 @@ private static String[] castObjectArrayToStringArray(Object[] array) {
 	return stringArray;
 }
 /**
- * Check whether the method corresponds to the perform&ls;Verb&gt;Command( String args[])
+ * Check whether the method corresponds to the perform&lt;Verb&gt;Command( String args[])
  * Creation date: (9/12/99 9:28:23 PM)
  * @arg Method method  - the method to be checked
  * @return String &ls;Verb&gt; if the method match the pattern

@@ -5,7 +5,7 @@ import sexpr.SExpr;
 /**
  * the result of matching a pattern against data can be 
  * a pair of environment containing bound variables (name -> SExpr) maps
- * and/or an SExpr of the pattern has also term rewriting clause
+ * and/or an SExpr if the pattern has also term rewriting clause
  * @author ccozianu
  */
 public class XMatchResult {
