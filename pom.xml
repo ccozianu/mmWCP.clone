@@ -8,5 +8,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>mmWCP.SExpr</module>
+  	<module>mmWCP.Web</module>
   </modules>
 </project>

@@ -1,0 +1,7 @@
+/**
+ * 
+ */
+/**
+ *
+ */
+package me.mywiki.exceptions;

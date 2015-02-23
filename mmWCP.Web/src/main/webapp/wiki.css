@@ -1,0 +1,24 @@
+/** this is temporary for debug and should be commented out 
+table {border: 2px solid red; margin: 3px }
+td {border: 1px dotted purple; padding: 2px }
+/** **/
+
+body {margin: 4px; color: black; background: white; }
+table { width: 100%; margin: 0; }
+table td {padding: 0; border-width: 0; vertical-align: top;
+			font-family: Verdana,Arial, Helvetica, sans-serif;}
+table td#heading { background: rgb(85%,85%,70%) ; border: 1px dotted purple; font-size: 200%;text-align: left; text-indent: 50px }
+
+a:link {color: #990000; }
+a:visited {color: #990099 }
+
+p {line-height: 1.66; margin: 0.5em 3em 1em 3em;}
+
+div#viewpoints { position: absolute; top: 4em; right: 0; width:20%; font-size:11px; background:yellow; }
+div#viewpoints {position: absolute; top: 4em; right: 0; width: 20%;
+   font-size: 11px; z-index: 11;}
+div#viewpoints h3 {background: rgb(70%,70%,55%); color: black;
+   margin: 0; padding: 0.33em 0 0 0.5em; border-width: 0;}
+div#viewpoints a {display: block; padding: 8px 0 2px 10px; margin: 0;
+   border-left: 1px solid rgb(70%,70%,55%);}
+div#viewpoints a:hover {background: rgb(85%,85%,70%);}

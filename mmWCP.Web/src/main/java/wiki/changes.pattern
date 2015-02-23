@@ -1,0 +1,25 @@
+($OUT
+ (HTML 
+ 	(HEADER 
+ 	 	(meta (@ (http-equiv "Content-Type") (content "text/html; charset=ISO-8859-1"))
+ 	 		  )
+ 	  
+ 	 	)
+ 	(BODY 
+	    (TABLE
+			($*
+				(?page_name ?team_name ?username ?version ?change_date ?change_comment
+					($OUT (TR  	(TD ?page_name) 
+					   			(TD ?team_name) 
+					   			(TD ?user_name) 
+					   			(TD ?version) 
+					   			(TD ?change_date) 
+					   			)
+				  		  (TR 	(TD (@ (ROWSPAN 4)) ?change_comment) 
+				  		  		)
+						 )
+					)
+				)
+  			)		
+		)
+	)
