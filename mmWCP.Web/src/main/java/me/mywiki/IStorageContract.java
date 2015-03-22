@@ -10,6 +10,7 @@ import java.io.IOException;
 public interface IStorageContract {
     
     public static interface IStorage {
+        
         public abstract void save( ByteSource content, 
                                    String documentID,
                                    String form, 
