@@ -9,6 +9,10 @@
     <artifactId>mmWCP.Master</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
+  <artifactId>mmWCP.SExpr</artifactId>
+  <name>mmWCP.SExpr</name>
+  <description>S-Expression library</description>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -18,12 +22,9 @@
   	</dependency>
   </dependencies>
   
-  <artifactId>mmWCP.SExpr</artifactId>
-  <name>mmWCP.SExpr</name>
-  <description>S-Expression library</description>
- 
+  
   <build>
-  	<directory>build</directory>
+ 	<directory>build</directory>
   	<plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -37,6 +38,5 @@
     </plugins>  
     <finalName>mmWCP.SExpr</finalName>
   </build>
-  <groupId>me.mywiki</groupId>
-  <version>0.0.1-SNAPSHOT</version>
+
 </project>
