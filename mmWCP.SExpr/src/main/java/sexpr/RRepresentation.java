@@ -10,7 +10,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import sexpr.util.Assert;
 import sexpr.util.Base64;
 
 
@@ -254,7 +253,7 @@ public class RRepresentation implements SRepresentation {
 		}
 		
 		ParsingAlgorithm(ByteSource bs_) {
-			Assert._(bs_!=null);
+			assert(bs_!=null);
 			this.bs= bs_;
 		}
 		
@@ -348,12 +347,12 @@ public class RRepresentation implements SRepresentation {
 				c= bs.peekByte();
 				if (c== 't' || c=='T'){
 					c= bs.advanceAndPeek();
-					Assert._(c==-1 || SUtils.isTokenterminator(c));
+					assert(c==-1 || SUtils.isTokenterminator(c));
 					return SExpr.TRUE;
 					}
 				if (c== 'f' || c=='F'){
 						c= bs.advanceAndPeek();
-						Assert._(c==-1 || SUtils.isTokenterminator(c));
+						assert(c==-1 || SUtils.isTokenterminator(c));
 						return SExpr.FALSE;
 						}
 				else if (SUtils.isDecdigit[c]) {

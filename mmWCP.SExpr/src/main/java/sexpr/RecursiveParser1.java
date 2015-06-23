@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PushbackInputStream;
 
-import sexpr.util.Assert;
+
 
 
 
@@ -139,13 +139,13 @@ public class RecursiveParser1 {
 				if (c==-1){ throw new IOException("Unexpected eof in parsing special");}
 				if (c== 't' || c=='T'){
 					c= is.read();
-					Assert._(c==-1 || SUtils.isTokenterminator[c]);
+					assert(c==-1 || SUtils.isTokenterminator[c]);
 					if (c!=-1) is.unread(c);
 					return SExpr.TRUE;
 					}
 				else if (c== 'f' || c=='F'){
 					c= is.read();
-					Assert._(c==-1 || SUtils.isTokenterminator[c]);
+					assert(c==-1 || SUtils.isTokenterminator[c]);
 					if (c!=-1) is.unread(c);
 					return SExpr.FALSE;
 					}

@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.WeakHashMap;
 
-import sexpr.util.Assert;
 import sexpr.util.Base64;
 
 /**
@@ -112,7 +111,7 @@ public abstract class SExpr implements Iterable<SExpr> {
 		private CONS_(SExpr car_,SExpr cdr_) { this(car_,cdr_,null);}
 		private CONS_(SExpr car_, SExpr cdr_, SExpr junk){
 			     super(junk); 
-			     Assert._(car_!=null && cdr_ != null);
+			     assert(car_!=null && cdr_ != null);
 				 this.car= car_; this.cdr= cdr_ ; }
 		
 		public SExpr setCDR(SExpr cdr_) {this.cdr= cdr_; return this; }
@@ -279,7 +278,7 @@ public abstract class SExpr implements Iterable<SExpr> {
 		String value;
 
 		_String_ (String s)  { this(s,null);}
-		_String_(String s, SExpr junk) { super(junk); Assert._(s!=null);this.value= s;}
+		_String_(String s, SExpr junk) { super(junk); assert(s!=null);this.value= s;}
 		
 		public String toString() {
 			return SUtils.escapeString(value);
@@ -337,7 +336,7 @@ public abstract class SExpr implements Iterable<SExpr> {
 		String value;
 
 		_Atom_ (String s)  { this(s,null);}
-		_Atom_(String s, SExpr junk) { super(junk); Assert._(s!=null);
+		_Atom_(String s, SExpr junk) { super(junk); assert(s!=null);
 			this.value= s;
 		}
 		
