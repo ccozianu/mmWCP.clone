@@ -6,17 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
-
-
-import org.omg.PortableInterceptor.SUCCESSFUL;
-
 import me.mywiki.algos.strings.SuffixTreeAlgorithms;
 import me.mywiki.algos.strings.SuffixTreeAlgorithms.SuffixTree;
-import me.mywiki.algos.strings.SuffixTreeAlgorithms.SuffixTree.SuffixTreeNode;
 
-public class UkkonenConstruction2 {
+public class UkkonenConstructionOptimized0 {
 
     public static SuffixTree construct(String t){
         return new STreeImpl(t);
@@ -34,7 +27,9 @@ public class UkkonenConstruction2 {
             
             private Map<Character, ThisTreeNodeBase> 
                 map=  new HashMap<>();
-            
+    
+            private ThisTreeNodeBase prev= null;
+
             @Override
             public SuffixTreeNode findTransition(char c) {
                 ThisTreeNodeBase next= map.get(c);
@@ -60,7 +55,7 @@ public class UkkonenConstruction2 {
                         && ref.offsetFromBase == 0);
                 char c= theString.charAt(theStrPos);
                 if (map.containsKey(c)) {
-                    return new NoSplit( this );
+                    return new NoSplit( );
                 }
                 else {
                     // normally next character would be exactly this.strToEnd
@@ -78,8 +73,23 @@ public class UkkonenConstruction2 {
              * @param pred_
              */
             public void setPredecessor(ThisTreeNodeBase pred_) {
-                assert( pred_ instanceof ForkNode || pred_ instanceof InitialPseudoNode );
-                this.predecessor= pred_;
+                assert( ( pred_ instanceof ForkNode && 
+                          pred_.substringTo().equals( this.precedingStr())) 
+                        || (this == root && pred_ instanceof InitialPseudoNode) );
+                this.prev= pred_;
+            }
+            
+            public ThisTreeNodeBase getPredecessor() {
+                return this.prev;
+            }
+            
+
+            /**
+             * The string preceding strToHere, i.e. the string that if we enumerate
+             * from suffix tree root should lead us to our predecessor node
+             */
+            private CharSequence precedingStr() {
+                return theString.subSequence(strFromStart+1, strToEnd);
             }
             
  
@@ -147,7 +157,6 @@ public class UkkonenConstruction2 {
                     throw new RuntimeException("Not implemented yet");
                 }
                 
-                boolean extendsIndefinitely() { return false; }
             }
             
             /**
@@ -181,7 +190,7 @@ public class UkkonenConstruction2 {
                 
                 if (newTestChar == charAtRef) {
                     // no need to split as we have the transition
-                    return new NoSplit(this);
+                    return new NoSplit();
                 }
                 else {
                     assert ( ref.offsetFromBase >= 0 );
@@ -307,14 +316,16 @@ public class UkkonenConstruction2 {
             RefPoint ap =  new RefPoint( root ) ;
             SplitResult loopResult;
             for ( int i=0; 
-                  i < theString.length(); 
-                  ap = ap.transitionToReference(theString.charAt(i)), i++ ) 
+                  i < theString.length();
+                  // this is transitioned to the end of the loop
+                  //ap = ap.transitionToReference(theString.charAt(i)), 
+                  i++ ) 
             {
-                System.err.println("Round : "+i+ " char:"+theString.charAt(i));
+                debug("Round : "+i+ " char:"+theString.charAt(i));
                 SegmentSplitResult prevSplit= null;
                 do 
                 {
-                    System.err.println(" Start active point: " +ap);
+                    debug(" Start active point: " +ap);
                     // create a new branching node for current active point
                     // because we're missing theString.charAt(i)
                     // the returned point is the bifurcation
@@ -323,21 +334,46 @@ public class UkkonenConstruction2 {
                     if (loopResult instanceof SegmentSplitResult ) {
                         SegmentSplitResult newSplit= (SegmentSplitResult) loopResult;
                         if (prevSplit != null){
-                            prevSplit.node.predecessor= newSplit.node;
+                            prevSplit.node.setPredecessor(newSplit.node);
+                            debug( "Added backlink: " + prevSplit.node + " -> " + newSplit.node);
                         }
                         prevSplit= newSplit;
+                    }
+                    else if (loopResult instanceof ForkNewBranch) {
+                        if (prevSplit != null) {
+                            prevSplit.node.setPredecessor(ap.base);
+                            debug("Added backlink: " + prevSplit.node
+                                    + " -> " + ap.base);
+                        }
+                        // next nodes on the backlink trail will also be a forks
+                        prevSplit= null;
                     }
                     
                     if (loopResult.wasSplit) {
                         ap= ap.predecessor();
                     }
                 } while (loopResult.wasSplit);
-                System.err.println("End point: " + ap);
+                debug("End point: " + ap);
+                
+                //position active point for the next round
                 if (prevSplit != null) {
-                    prevSplit.node.predecessor= loopResult.node;
-                }
+                    //prevSplit.node.predecessor= loopResult.node;
+                    assert( ap.base instanceof ForkNode );
+                    prevSplit.node.setPredecessor(ap.base);
+                    debug("Added backlink: " + prevSplit.node
+                            + " -> " + ap.base);
+                }/**/
+                ap = ap.transitionToReference(theString.charAt(i));
+                
             }
             closeTheTreeConstruction(ap);
+        }
+
+        //TODO: wire this to a system property
+        boolean debug=false;
+        private void debug(String s) {
+           if (debug)
+               System.err.println(s);
         }
 
         /**
@@ -428,12 +464,11 @@ public class UkkonenConstruction2 {
             public RefPoint transitionToReference(char c) {
                 if (base instanceof LinearNode) {
                     LinearNode linBase= (LinearNode) base;
-                    if (offsetFromBase == linBase.count ) {
-                        assert(linBase.next != null );
-                        return linBase.next.transitionToReference(c);
+                    assert(linBase.charAt(offsetFromBase) == c);
+                    if (offsetFromBase == linBase.count - 1 ) {
+                        return new RefPoint(linBase.next);
                     }
                     else {
-                        assert(linBase.charAt(offsetFromBase) == c);
                         return new RefPoint(linBase, offsetFromBase +1);
                     }
                 }
@@ -446,15 +481,15 @@ public class UkkonenConstruction2 {
             public RefPoint predecessor() {
                 if (base instanceof ForkNode) {
                     assert(offsetFromBase == 0);
-                    assert(base.predecessor != null);
+                    assert(((ForkNode)base).getPredecessor()!= null);
                     //base.predecessor is not a CapsuleNode only for root
                     // but we should not reach here from base root with fork
-                    return new RefPoint(base.predecessor);
+                    return new RefPoint(((ForkNode)base).getPredecessor());
                 }
                 else { // Linear node
                     LinearNode linNode= (LinearNode) base;
                     // -1, and +1 are for the extra char representing the transition coming from the parent node
-                    return (linNode.comingFrom.predecessor).transitionToReference(linNode.startPos - 1, this.offsetFromBase + 1);
+                    return (linNode.comingFrom.getPredecessor()).transitionToReference(linNode.startPos - 1, this.offsetFromBase + 1);
                 }
             }
 
@@ -488,7 +523,6 @@ public class UkkonenConstruction2 {
          * a base class for the nodes of this tree
          */
         abstract class ThisTreeNodeBase implements SuffixTreeNode {
-            ThisTreeNodeBase predecessor= null;
             
             // the path that reaches this node in "theString"
             // expressed as startPos and endPos (last one exclusive)
@@ -501,10 +535,14 @@ public class UkkonenConstruction2 {
                 this.strToEnd= strToEnd_;
             }
              
-            //TODO: optimize this
+             public CharSequence substringTo() {
+                return theString.subSequence(strFromStart, strToEnd);
+            }
+
             public RefPoint transitionToReference( int startPos,
                                                    int count ) 
             {
+                //TODO: optimize this: iterating one by one can get to N**2 complexity
                 RefPoint result= new RefPoint(this);
                 for (int i=0; i< count; i++) {
                     result=  result.transitionToReference(theString.charAt( startPos + i));
@@ -574,7 +612,7 @@ public class UkkonenConstruction2 {
             
             @Override
             public SplitResult testAndSplit(RefPoint inOutReference, int nextPosition) {
-                return new NoSplit(root); 
+                return new NoSplit(); 
             }
             
             private final ForkNode root;
@@ -596,17 +634,17 @@ public class UkkonenConstruction2 {
 
             @Override
             public SuffixTreeNode findTransition(char c) {
-                throw new RuntimeException("Not implemented yet");
+                return null;
             }
 
             @Override
-            public me.mywiki.algos.strings.impl.suffixtrees.UkkonenConstruction2.STreeImpl.RefPoint transitionToReference(
+            public me.mywiki.algos.strings.impl.suffixtrees.UkkonenConstructionOptimized0.STreeImpl.RefPoint transitionToReference(
                     int startPos, int count) {
                 throw new RuntimeException("Not implemented yet");
             }
 
             @Override
-            public me.mywiki.algos.strings.impl.suffixtrees.UkkonenConstruction2.STreeImpl.RefPoint transitionToReference(
+            public me.mywiki.algos.strings.impl.suffixtrees.UkkonenConstructionOptimized0.STreeImpl.RefPoint transitionToReference(
                     char c) {
                 throw new RuntimeException("Not implemented yet");
             }
@@ -635,30 +673,33 @@ public class UkkonenConstruction2 {
         private abstract static class SplitResult {
             
             final boolean wasSplit;
-            final ThisTreeNodeBase node;
 
-            public SplitResult(boolean wasSplit_, ThisTreeNodeBase splitAt_ ) {
+            public SplitResult(boolean wasSplit_) {
                 this.wasSplit= wasSplit_;
-                this.node= splitAt_;
             }
         }
         
         private static class NoSplit extends SplitResult { 
-            public NoSplit(ThisTreeNodeBase node_) {  super(false, node_); }
+            public NoSplit() {  super(false); }
         }
         
         private static class ForkNewBranch extends SplitResult {
             final char cNew;
+            final ForkNode splitAt;
             public ForkNewBranch( ForkNode splitAt_, char cNew_) {
-                super(true, splitAt_);
+                super(true);
                 this.cNew= cNew_;
+                this.splitAt= splitAt_;
             }
         }
         
         private static class SegmentSplitResult extends SplitResult {
+            final ForkNode node;
+
             final char cOld, cNew;
             SegmentSplitResult(ForkNode newlySplitAt_, char cOld_, char cNew_) {
-                super(true, newlySplitAt_ );
+                super(true );
+                this.node = newlySplitAt_;
                 this.cOld= cOld_;
                 this.cNew= cNew_;
             }
@@ -669,28 +710,33 @@ public class UkkonenConstruction2 {
     
     public static void main(String [] args) {
         try {
-            String [] tests = { /**"",
+            String [] tests = { /**/"",
+                                "abbbbb",
                                 "b",
                                 "ab",
+                                "aa",
                                 "abc",
                                 "abcd",
                                 "abcdef",
+                                "aaaaaaa",
+                                
                                 "baa",
-                                "baaa",
+                                /**/
                                 "aaab",
                                 "abbb",
                                 "aba",
                                 "abab",
                                 "ababab",
-                                "ababc",/**/
-                                "abcaaaaabcabc",/**/
-                                "abababc",
-                                "mississipi",
-                                 
-
+                                "ababc",
+                                "abababx",/*
+                                
+                                "abcaaaaabcabc",
+                                "mabcabcabcabc",
+                                "mississipi",/**/
+                                "mississiabsiabab"//b"//ab"//ababc"/**/
                            };
             for (String testString:tests) {
-                 SuffixTree result= construct(testString);
+                SuffixTree result= construct(testString);
                 System.out.println("Verifying: "+testString);
                 SuffixTreeAlgorithms.verifySuffixTree(result, testString );
                 System.out.println(result);

@@ -178,21 +178,23 @@ public class NSquareConstruction {
 		
 		
 		
-		public static void main(String [] args) {
-		    try {
-		        String testString= "mississipississipi";
-		        SuffixTree result= construct(testString);
-		        
-		        SuffixTreeAlgorithms.verifySuffixTree(result, testString );
-		        System.out.println(result);
-		    }
-		    catch(Exception ex) {
-		        System.err.println("Main caught exception: "+ex);
-		        ex.printStackTrace(System.err);
-		    }
-		    
-		}
 		
 	}
+
+	public static void main(String [] args) {
+        try {
+            String testString= "mississiabsiabab" ; 
+                                // "mississipississipi";
+            SuffixTree result= construct(testString);
+            
+            SuffixTreeAlgorithms.verifySuffixTree(result, testString );
+            System.out.println(result);
+        }
+        catch(Exception ex) {
+            System.err.println("Main caught exception: "+ex);
+            ex.printStackTrace(System.err);
+        }
+        
+    }
 	
 }

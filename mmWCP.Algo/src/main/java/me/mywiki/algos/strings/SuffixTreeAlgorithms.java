@@ -41,7 +41,7 @@ public class SuffixTreeAlgorithms {
 
     public static void verifySuffixTree( SuffixTree stree, CharSequence s ) {
         final int N= s.length();
-        for (int i=0; i<= N; i++ )
+        for (int i=N-1; i>=0; i-- )
         {
             CharSequence suffix= s.subSequence(i, N);
             if (! containsAsSuffix(stree, suffix)) {
