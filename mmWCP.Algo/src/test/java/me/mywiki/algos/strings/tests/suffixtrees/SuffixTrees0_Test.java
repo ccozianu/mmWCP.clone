@@ -6,9 +6,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 
-import me.mywiki.algos.strings.SuffixTreeAlgorithms;
-import me.mywiki.algos.strings.SuffixTreeAlgorithms.SuffixTree;
-import me.mywiki.algos.strings.impl.suffixtrees.UkkonenConstructionOptimized0;
+import me.mywiki.algos.strings.impl.suffixtrees.learning.SuffixTreeAlgorithms;
+import me.mywiki.algos.strings.impl.suffixtrees.learning.UkkonenConstructionOptimized0;
+import me.mywiki.algos.strings.impl.suffixtrees.learning.SuffixTreeAlgorithms.SuffixTree;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
-public class SuffixTreesTest {
+public class SuffixTrees0_Test {
 
     @Parameters(name="{0}")
     public static Collection<Object[]> testData() {

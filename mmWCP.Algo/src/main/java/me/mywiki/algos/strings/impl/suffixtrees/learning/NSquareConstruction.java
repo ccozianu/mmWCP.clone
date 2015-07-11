@@ -1,4 +1,4 @@
-package me.mywiki.algos.strings.impl.suffixtrees;
+package me.mywiki.algos.strings.impl.suffixtrees.learning;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -6,8 +6,8 @@ import java.util.Map;
 
 
 
-import me.mywiki.algos.strings.SuffixTreeAlgorithms;
-import static me.mywiki.algos.strings.SuffixTreeAlgorithms.*;
+
+import static me.mywiki.algos.strings.impl.suffixtrees.learning.SuffixTreeAlgorithms.*;
 
 /**
  * This implementation is sub-optimal (n^2 in time and space wasted)

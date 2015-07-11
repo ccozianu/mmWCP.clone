@@ -1,4 +1,4 @@
-package me.mywiki.algos.strings.impl.suffixtrees;
+package me.mywiki.algos.strings.impl.suffixtrees.learning;
 
 import java.util.BitSet;
 import java.util.Collection;
@@ -6,8 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.mywiki.algos.strings.SuffixTreeAlgorithms;
-import me.mywiki.algos.strings.SuffixTreeAlgorithms.SuffixTree;
+import me.mywiki.algos.strings.impl.suffixtrees.learning.SuffixTreeAlgorithms.SuffixTree;
 
 public class UkkonenConstructionOptimized0 {
 
@@ -638,13 +637,13 @@ public class UkkonenConstructionOptimized0 {
             }
 
             @Override
-            public me.mywiki.algos.strings.impl.suffixtrees.UkkonenConstructionOptimized0.STreeImpl.RefPoint transitionToReference(
+            public me.mywiki.algos.strings.impl.suffixtrees.learning.UkkonenConstructionOptimized0.STreeImpl.RefPoint transitionToReference(
                     int startPos, int count) {
                 throw new RuntimeException("Not implemented yet");
             }
 
             @Override
-            public me.mywiki.algos.strings.impl.suffixtrees.UkkonenConstructionOptimized0.STreeImpl.RefPoint transitionToReference(
+            public me.mywiki.algos.strings.impl.suffixtrees.learning.UkkonenConstructionOptimized0.STreeImpl.RefPoint transitionToReference(
                     char c) {
                 throw new RuntimeException("Not implemented yet");
             }
